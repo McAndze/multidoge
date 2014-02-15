@@ -312,7 +312,7 @@ public class MultiBitFrame extends JFrame implements ViewSystem, ApplicationList
     }
 
     private void sizeAndCenter() {
-        // Get the screen size as a java dimension.
+        /*// Get the screen size as a java dimension.
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
         int height = (int) (screenSize.height * PROPORTION_OF_VERTICAL_SCREEN_TO_FILL);
@@ -322,7 +322,17 @@ public class MultiBitFrame extends JFrame implements ViewSystem, ApplicationList
         setPreferredSize(new Dimension(width, height));
         double startVerticalPositionRatio = (1 - PROPORTION_OF_VERTICAL_SCREEN_TO_FILL) / 2;
         double startHorizontalPositionRatio = (1 - PROPORTION_OF_HORIZONTAL_SCREEN_TO_FILL) / 2;
-        setLocation((int) (width * startHorizontalPositionRatio), (int) (height * startVerticalPositionRatio));
+        setLocation((int) (width * startHorizontalPositionRatio), (int) (height * startVerticalPositionRatio));*/
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice[] gd = ge.getScreenDevices();
+        if( screen > -1 && screen < gd.length ) {
+            frame.setLocation(gd[screen].getDefaultConfiguration().getBounds().x, frame.getY());
+        } else if( gd.length > 0 ) {
+            frame.setLocation(gd[0].getDefaultConfiguration().getBounds().x, frame.getY());
+        } else {
+            throw new RuntimeException( "No Screens Found" );
+        }
+        
     }
 
     private void initUI(View initialView) {
